@@ -1,6 +1,8 @@
 import pandas as pd
 import psycopg2
 import statsmodels.formula.api as smf
+import os
+from dotenv import load_dotenv
 
 query = """
 SELECT
@@ -26,12 +28,14 @@ WHERE
     AND c.customer_state IS NOT NULL;
 """
 
+load_dotenv("module3regressioncredentials.env")
+
 conn = psycopg2.connect(
-    host="localhost",
-    database="BAN5003",
-    user="postgres",
-    password="***REMOVED***",
-    port="5432"
+    host=os.getenv("DB_HOST"),
+    database=os.getenv("DB_NAME"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    port=os.getenv("DB_PORT")
 )
 
 df = pd.read_sql(query, conn)
@@ -43,12 +47,3 @@ model = smf.ols(
 ).fit()
 
 print(model.summary())
-
-results = pd.DataFrame({
-    "Estimate": model.params,
-    "Std. Error": model.bse,
-    "95% CI Lower": model.conf_int()[0],
-    "95% CI Upper": model.conf_int()[1]
-})
-
-results.to_excel("freight_regression_results.xlsx")
