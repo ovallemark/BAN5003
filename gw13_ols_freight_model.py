@@ -19,13 +19,16 @@ import pandas as pd
 import psycopg2
 import statsmodels.formula.api as smf
 
+from dotenv import load_dotenv
+
+load_dotenv("module3regressioncredentials.env")
 
 DSN = {
     "host": "localhost",
     "port": 5432,
     "dbname": "BAN5003",          # <-- EDIT if your database is named differently (e.g. "BAN5003")
     "user": "postgres",        # <-- EDIT: your Postgres username
-    "password": "***REMOVED***",   # <-- EDIT: your Postgres password
+    "password": os.getenv("DB_PASSWORD"),   # <-- EDIT: your Postgres password
 }
 
 QUERY = """

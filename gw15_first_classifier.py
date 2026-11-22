@@ -30,6 +30,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
+from dotenv import load_dotenv
+
+load_dotenv("module3regressioncredentials.env")
 
 SEED = 42
 
@@ -38,7 +41,7 @@ DSN = {
     "port": 5432,
     "dbname": "BAN5003",          # <-- EDIT if your database is named differently (e.g. "BAN5003")
     "user": "postgres",        # <-- EDIT: your Postgres username
-    "password": "***REMOVED***",   # <-- EDIT: your Postgres password
+    "password": os.getenv("DB_PASSWORD"),   # <-- EDIT: your Postgres password
 }
 
 QUERY = """
